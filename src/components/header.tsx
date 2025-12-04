@@ -32,21 +32,29 @@ export function Header() {
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
+    
+    // Close mobile menu immediately
     setIsOpen(false)
     
-    const targetId = href.replace('#', '')
-    const element = document.getElementById(targetId)
-    
-    if (element) {
-      const headerOffset = 80 // Height of fixed header + some padding
-      const elementPosition = element.getBoundingClientRect().top
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+    // Small delay to allow menu close animation, then scroll
+    setTimeout(() => {
+      const targetId = href.replace('#', '')
+      const element = document.getElementById(targetId)
+      
+      if (element) {
+        const headerOffset = 80 // Height of fixed header + some padding
+        const elementPosition = element.getBoundingClientRect().top
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      })
-    }
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
+      } else {
+        // Fallback: if element not found, just navigate to hash
+        window.location.hash = href
+      }
+    }, 100) // Small delay for smoother UX on mobile
   }
 
   return (
