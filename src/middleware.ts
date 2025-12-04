@@ -1,16 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-// Simple JWT decoder
+// Simple JWT decoder (Edge runtime compatible)
 function decodeJWT(token: string): { exp?: number; id?: string; email?: string } | null {
   try {
     const parts = token.split('.')
     if (parts.length !== 3) return null
     
     const payload = parts[1]
+    // Replace URL-safe base64 chars and decode
     const base64 = payload.replace(/-/g, '+').replace(/_/g, '/')
-    const decoded = JSON.parse(Buffer.from(base64, 'base64').toString('utf8'))
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    )
+    const decoded = JSON.parse(jsonPayload)
     return decoded
-  } catch {
+  } catch (e) {
+    console.error('JWT decode error:', e)
     return null
   }
 }
