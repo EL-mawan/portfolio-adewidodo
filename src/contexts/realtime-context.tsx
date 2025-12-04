@@ -8,7 +8,7 @@ interface RealtimeContextType {
 }
 
 const RealtimeContext = createContext<RealtimeContextType>({
-  lastUpdate: Date.now(),
+  lastUpdate: 0,
   triggerUpdate: () => {}
 })
 
@@ -67,7 +67,8 @@ export function useAutoRefresh(fetchData: () => void, dependencies: any[] = []) 
 
   useEffect(() => {
     fetchData()
-  }, [lastUpdate, ...dependencies])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastUpdate])
 
   useEffect(() => {
     const handleUpdate = () => {
@@ -78,5 +79,6 @@ export function useAutoRefresh(fetchData: () => void, dependencies: any[] = []) 
     return () => {
       window.removeEventListener('portfolio-update', handleUpdate)
     }
-  }, [fetchData])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 }
