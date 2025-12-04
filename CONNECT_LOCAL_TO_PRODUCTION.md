@@ -36,7 +36,7 @@ Script akan tanya connection string, lalu otomatis setup semuanya!
 #### 2. Update .env
 Edit file `.env`:
 ```env
-DATABASE_URL="postgresql://user:pass@ep-xxx.neon.tech/neondb?sslmode=require"
+DATABASE_URL="postgresql://neondb_owner:npg_kyVf3jdL1Qhg@ep-gentle-lab-a1u7dph3-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 JWT_SECRET="your-super-secret-jwt-key-change-this-in-production"
 NEXT_PUBLIC_API_URL="http://localhost:3000"
 ```
