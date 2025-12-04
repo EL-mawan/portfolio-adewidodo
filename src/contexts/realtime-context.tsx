@@ -13,7 +13,7 @@ const RealtimeContext = createContext<RealtimeContextType>({
 })
 
 export function RealtimeProvider({ children }: { children: React.ReactNode }) {
-  const [lastUpdate, setLastUpdate] = useState(Date.now())
+  const [lastUpdate, setLastUpdate] = useState(0)
 
   const triggerUpdate = () => {
     setLastUpdate(Date.now())
