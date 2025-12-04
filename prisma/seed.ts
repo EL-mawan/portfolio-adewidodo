@@ -6,25 +6,42 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('Creating admin user...')
 
-  // Hash password
-  const hashedPassword = await bcrypt.hash('admin123', 10)
+    // Create or update admin user
+    const hashedPassword = await bcrypt.hash('hse123456', 10)
+    
+    // Check if old admin exists and update, or create new
+    const oldAdmin = await prisma.user.findUnique({ where: { email: 'admin@example.com' } })
+    
+    if (oldAdmin) {
+      await prisma.user.update({
+        where: { email: 'admin@example.com' },
+        data: {
+          email: 'adewidodo@hse.com',
+          password: hashedPassword,
+          name: 'Ade Widodo',
+        }
+      })
+      console.log('Updated existing admin user.')
+    } else {
+      await prisma.user.upsert({
+        where: { email: 'adewidodo@hse.com' },
+        update: {
+          password: hashedPassword,
+          name: 'Ade Widodo',
+        },
+        create: {
+          email: 'adewidodo@hse.com',
+          name: 'Ade Widodo',
+          password: hashedPassword,
+          role: 'admin',
+        },
+      })
+      console.log('Created/Updated new admin user.')
+    }
 
-  // Create or update admin user
-  const admin = await prisma.user.upsert({
-    where: { email: 'admin@example.com' },
-    update: {
-      password: hashedPassword,
-    },
-    create: {
-      email: 'admin@example.com',
-      name: 'Admin',
-      password: hashedPassword,
-    },
-  })
-
-  console.log('✅ Admin user created/updated successfully!')
-  console.log('Email:', admin.email)
-  console.log('Password: admin123')
+    console.log('✅ Admin user credentials updated successfully!')
+    console.log('Email: adewidodo@hse.com')
+    console.log('Password: hse123456')
   console.log('\nYou can now login with these credentials.')
 }
 
