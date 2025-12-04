@@ -27,11 +27,18 @@ export default function Home() {
     cvUrl: null
   })
 
-  const [floatingElements, setFloatingElements] = useState<{ left: string; top: string }[]>([])
+  const [floatingElements, setFloatingElements] = useState<{ left: string; top: string }[]>(
+    // Initialize with static values to match server render
+    Array(6).fill(null).map((_, i) => ({
+      left: '50%',
+      top: '50%',
+    }))
+  )
 
   useEffect(() => {
+    // Update with random values on client only
     setFloatingElements(
-      [...Array(6)].map(() => ({
+      Array(6).fill(null).map(() => ({
         left: `${Math.random() * 100}%`,
         top: `${Math.random() * 100}%`,
       }))

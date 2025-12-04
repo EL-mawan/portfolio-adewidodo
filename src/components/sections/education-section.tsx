@@ -26,7 +26,11 @@ export function EducationSection() {
   useEffect(() => {
     fetch('/api/education')
       .then(res => res.json())
-      .then(data => setEducation(data))
+      .then(data => {
+        if (Array.isArray(data)) {
+          setEducation(data)
+        }
+      })
       .catch(console.error)
   }, [])
 

@@ -19,7 +19,11 @@ export function SkillsSection() {
   useEffect(() => {
     fetch('/api/skills')
       .then(res => res.json())
-      .then(data => setSkills(data))
+      .then(data => {
+        if (Array.isArray(data)) {
+          setSkills(data)
+        }
+      })
       .catch(console.error)
   }, [])
 

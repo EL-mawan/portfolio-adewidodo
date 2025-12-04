@@ -28,7 +28,11 @@ export function ExperienceSection() {
   useEffect(() => {
     fetch('/api/experience')
       .then(res => res.json())
-      .then(data => setExperiences(data))
+      .then(data => {
+        if (Array.isArray(data)) {
+          setExperiences(data)
+        }
+      })
       .catch(console.error)
   }, [])
 
