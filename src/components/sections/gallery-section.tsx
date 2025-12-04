@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { TiltCard } from '@/components/ui/tilt-card'
 import { useAutoRefresh } from '@/contexts/realtime-context'
 import { Loader2 } from 'lucide-react'
@@ -12,6 +12,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+import type { CarouselApi } from "@/components/ui/carousel"
+import Autoplay from "embla-carousel-autoplay"
 
 interface GalleryImage {
   id: string
@@ -25,6 +27,12 @@ export function GallerySection() {
   const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([])
   const [activeImage, setActiveImage] = useState<GalleryImage | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [api, setApi] = useState<CarouselApi>()
+  
+  // Autoplay plugin with 3 second delay
+  const plugin = useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true })
+  )
 
   const fetchGallery = async () => {
     try {
@@ -44,6 +52,18 @@ export function GallerySection() {
   }
 
   useAutoRefresh(fetchGallery)
+
+  // Update active image when carousel changes
+  useEffect(() => {
+    if (!api) return
+
+    api.on("select", () => {
+      const index = api.selectedScrollSnap()
+      if (galleryImages[index]) {
+        setActiveImage(galleryImages[index])
+      }
+    })
+  }, [api, galleryImages])
 
   const useSlider = galleryImages.length > 5
 
@@ -114,6 +134,8 @@ export function GallerySection() {
           {useSlider ? (
             <div className="w-full px-12">
               <Carousel
+                setApi={setApi}
+                plugins={[plugin.current]}
                 opts={{
                   align: "start",
                   loop: true,
