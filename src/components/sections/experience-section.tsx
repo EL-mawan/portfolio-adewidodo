@@ -109,13 +109,17 @@ export function ExperienceSection() {
                         {/* Image Section */}
                         <div className="relative h-56 w-full overflow-hidden">
                           {experience.images && experience.images.length > 0 ? (
-                            <ImageCarousel
-                              images={experience.images}
-                              alt={experience.company}
-                              autoSlideInterval={3000}
-                              showControls={true}
-                              showIndicators={true}
-                            />
+                            <div className="absolute inset-0 w-full h-full">
+                              <ImageCarousel
+                                images={experience.images}
+                                alt={experience.company}
+                                autoSlideInterval={3000}
+                                showControls={true}
+                                showIndicators={true}
+                                className="w-full h-full"
+                              />
+                              <div className="absolute inset-0 bg-linear-to-t from-background/80 to-transparent z-10 pointer-events-none" />
+                            </div>
                           ) : experience.image ? (
                             <img 
                               src={experience.image}

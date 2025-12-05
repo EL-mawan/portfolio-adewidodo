@@ -98,14 +98,18 @@ export function CertificationSection() {
               >
                 {/* Full Background Image */}
                 {cert.images && cert.images.length > 0 ? (
-                  <ImageCarousel
-                    images={cert.images}
-                    alt={cert.title}
-                    autoSlideInterval={3000}
-                    showControls={false}
-                    showIndicators={true}
-                    className="absolute inset-0"
-                  />
+                  <div className="absolute inset-0 w-full h-full">
+                    <ImageCarousel
+                      images={cert.images}
+                      alt={cert.title}
+                      autoSlideInterval={3000}
+                      showControls={false}
+                      showIndicators={true}
+                      className="w-full h-full"
+                    />
+                    {/* Add overlay to match single image style */}
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300 pointer-events-none" />
+                  </div>
                 ) : cert.image ? (
                   <div className="absolute inset-0">
                     <img 
