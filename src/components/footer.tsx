@@ -52,12 +52,12 @@ export function Footer() {
             >
               {settings.footerUrl ? (
                 <Link href={settings.footerUrl} target="_blank" rel="noopener noreferrer">
-                  <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent mb-4 cursor-pointer hover:opacity-80 transition-opacity">
+                  <h3 className="text-2xl font-bold bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent mb-4 cursor-pointer hover:opacity-80 transition-opacity">
                     Ade Widodo
                   </h3>
                 </Link>
               ) : (
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent mb-4">
+                <h3 className="text-2xl font-bold bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent mb-4">
                   Ade Widodo
                 </h3>
               )}
@@ -104,16 +104,20 @@ export function Footer() {
               <div className="space-y-3">
                 <div className="flex items-center space-x-2 text-muted-foreground">
                   <Mail className="h-4 w-4" />
-                  <span className="text-sm">adewidodo@hse.com</span>
+                  <span className="text-sm">{settings.email || 'adewidodo@hse.com'}</span>
                 </div>
-                <div className="flex items-center space-x-2 text-muted-foreground">
-                  <Phone className="h-4 w-4" />
-                  <span className="text-sm">+62 812-3456-7890</span>
-                </div>
-                <div className="flex items-center space-x-2 text-muted-foreground">
-                  <MapPin className="h-4 w-4" />
-                  <span className="text-sm">Jakarta, Indonesia</span>
-                </div>
+                {settings.phone && (
+                  <div className="flex items-center space-x-2 text-muted-foreground">
+                    <Phone className="h-4 w-4" />
+                    <span className="text-sm">{settings.phone}</span>
+                  </div>
+                )}
+                {settings.location && (
+                  <div className="flex items-center space-x-2 text-muted-foreground">
+                    <MapPin className="h-4 w-4" />
+                    <span className="text-sm">{settings.location}</span>
+                  </div>
+                )}
               </div>
             </motion.div>
           </div>
