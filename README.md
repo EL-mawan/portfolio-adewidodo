@@ -149,6 +149,42 @@ npm run db:reset        # Reset database
 npm run lint            # Run ESLint
 ```
 
+## 🔄 Auto-Sync \u0026 Quick Deployment
+
+### 🚀 Quick Deploy to Production
+
+Deploy perubahan code ke Vercel dengan satu command:
+
+```bash
+./quick-deploy.sh "Your commit message"
+```
+
+### 🔄 Auto-Sync Content (Data)
+
+Content yang diedit via Admin Panel akan **LANGSUNG sync** ke production!
+
+**Setup sekali saja:**
+```bash
+./setup-vercel-db.sh
+```
+
+Setelah setup:
+- ✅ Edit content di `localhost:3000/admin` → **Instant sync** ke production ⚡
+- ✅ Tidak perlu redeploy untuk perubahan content!
+- ✅ Perubahan code → Auto-deploy saat git push
+
+**📚 Dokumentasi lengkap:** Lihat [AUTO_SYNC_GUIDE.md](./AUTO_SYNC_GUIDE.md)
+
+### 📝 Helper Scripts
+
+```bash
+# Setup Vercel database connection (sekali saja)
+./setup-vercel-db.sh
+
+# Quick deploy code changes
+./quick-deploy.sh "commit message"
+```
+
 ## 🚀 Deployment
 
 Website ini siap untuk di-deploy ke berbagai platform:
