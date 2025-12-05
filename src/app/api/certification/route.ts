@@ -22,7 +22,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { title, issuer, issueDate, expiryDate, credentialId, credentialUrl, image, description, order } = body
+    const { title, issuer, issueDate, expiryDate, credentialId, credentialUrl, image, images, description, order } = body
 
     const certification = await db.certification.create({
       data: {
@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
         credentialId,
         credentialUrl,
         image,
+        images: images || [],
         description,
         order: order || 0,
       },
@@ -51,7 +52,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json()
-    const { id, title, issuer, issueDate, expiryDate, credentialId, credentialUrl, image, description, order } = body
+    const { id, title, issuer, issueDate, expiryDate, credentialId, credentialUrl, image, images, description, order } = body
 
     const certification = await db.certification.update({
       where: { id },
@@ -63,6 +64,7 @@ export async function PUT(request: NextRequest) {
         credentialId,
         credentialUrl,
         image,
+        images: images || [],
         description,
         order,
       },

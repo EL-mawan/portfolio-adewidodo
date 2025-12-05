@@ -22,7 +22,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { title, company, location, startDate, endDate, description, current, order, image } = body
+    const { title, company, location, startDate, endDate, description, current, order, image, images } = body
 
     const experience = await db.experience.create({
       data: {
@@ -35,6 +35,7 @@ export async function POST(request: NextRequest) {
         current: current || false,
         order: order || 0,
         image: image || null,
+        images: images || [],
       },
     })
 
@@ -51,7 +52,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json()
-    const { id, title, company, location, startDate, endDate, description, current, order, image } = body
+    const { id, title, company, location, startDate, endDate, description, current, order, image, images } = body
 
     const experience = await db.experience.update({
       where: { id },
@@ -65,6 +66,7 @@ export async function PUT(request: NextRequest) {
         current,
         order,
         image: image || null,
+        images: images || [],
       },
     })
 
