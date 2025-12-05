@@ -125,24 +125,7 @@ export function CertificationSection() {
                   </div>
                 )}
 
-                {/* Status Badge */}
-                <div className="absolute top-2 right-2 md:top-4 md:right-4 z-10">
-                    {cert.expiryDate ? (
-                      new Date(cert.expiryDate) > new Date() ? (
-                        <Badge className="bg-green-500/20 text-green-100 border-green-500/30 backdrop-blur-md hover:bg-green-500/30 text-[10px] md:text-xs px-1.5 py-0.5 md:px-2.5 md:py-0.5">
-                          Valid
-                        </Badge>
-                      ) : (
-                        <Badge className="bg-red-500/20 text-red-100 border-red-500/30 backdrop-blur-md hover:bg-red-500/30 text-[10px] md:text-xs px-1.5 py-0.5 md:px-2.5 md:py-0.5">
-                          Expired
-                        </Badge>
-                      )
-                    ) : (
-                      <Badge className="bg-blue-500/20 text-blue-100 border-blue-500/30 backdrop-blur-md hover:bg-blue-500/30 text-[10px] md:text-xs px-1.5 py-0.5 md:px-2.5 md:py-0.5">
-                        No Expiry
-                      </Badge>
-                    )}
-                </div>
+
 
                 {/* Content Overlay with Blur */}
                 <div className="absolute inset-0 flex flex-col justify-end p-2 md:p-4">
