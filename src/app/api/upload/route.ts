@@ -23,18 +23,30 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if we're in production (Vercel) or development (local)
-    const isProduction = process.env.VERCEL === '1' || process.env.NODE_ENV === 'production'
+    // We check BLOB_READ_WRITE_TOKEN presence as the main indicator for Blob capability
+    const hasBlobToken = !!process.env.BLOB_READ_WRITE_TOKEN
     
-    if (isProduction && process.env.BLOB_READ_WRITE_TOKEN) {
-      // Production: Use Vercel Blob
+    if (hasBlobToken) {
+      // Use Vercel Blob
       try {
+        console.log('Uploading to Vercel Blob...')
         const blob = await put(file.name, file, {
           access: 'public',
+          token: process.env.BLOB_READ_WRITE_TOKEN // Explicitly pass token
         })
+        console.log('Blob upload success:', blob.url)
         return NextResponse.json({ url: blob.url, filename: file.name })
       } catch (blobError) {
         console.error('Vercel Blob error:', blobError)
-        // Fall through to local storage
+        // If blob fails in production, we should return error, not fallback to local
+        // because local storage in Vercel is ephemeral/read-only
+        if (process.env.NODE_ENV === 'production') {
+           return NextResponse.json({ 
+             error: 'Failed to upload to Vercel Blob', 
+             details: blobError instanceof Error ? blobError.message : String(blobError) 
+           }, { status: 500 })
+        }
+        // Only fallback to local in development
       }
     }
     
