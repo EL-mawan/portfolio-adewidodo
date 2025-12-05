@@ -161,28 +161,33 @@ export default function AdminDashboard() {
       return ''
     }
 
-    // Handle Back Button Aggressively
+    // Handle Back Button with Hash Guard Strategy
     const handlePopState = (event: PopStateEvent) => {
-      // Prevent navigation by immediately pushing state back
-      // We push TWICE to ensure the back button trap is robust
-      window.history.pushState(null, '', window.location.pathname)
-      
-      // Show logout confirmation dialog
-      setShowLogoutDialog(true)
-      
-      // Show warning toast
-      toast({
-        title: "⚠️ Peringatan Keamanan",
-        description: "Mohon gunakan tombol Logout untuk keluar dari Admin Panel demi keamanan data Anda.",
-        variant: "destructive",
-        duration: 3000
-      })
+      // If hash is gone (user pressed back), force it back and show dialog
+      if (window.location.hash !== '#guard') {
+        // Push state back immediately to trap user
+        window.history.pushState(null, '', window.location.pathname + '#guard')
+        
+        // Show logout confirmation dialog
+        setShowLogoutDialog(true)
+        
+        // Show warning toast
+        toast({
+          title: "⚠️ Konfirmasi Keluar",
+          description: "Anda mencoba meninggalkan halaman Admin. Silakan konfirmasi logout.",
+          variant: "destructive",
+          duration: 3000
+        })
+      }
     }
 
-    // Initialize history state trap
-    // Push state twice to create a buffer
-    window.history.pushState(null, '', window.location.pathname)
-    window.history.pushState(null, '', window.location.pathname)
+    // Initialize Hash Guard
+    // 1. Replace current state with hash
+    if (window.location.hash !== '#guard') {
+      window.history.replaceState(null, '', window.location.pathname + '#guard')
+      // 2. Push new state with hash to create history entry
+      window.history.pushState(null, '', window.location.pathname + '#guard')
+    }
 
     window.addEventListener('beforeunload', handleBeforeUnload)
     window.addEventListener('popstate', handlePopState)
