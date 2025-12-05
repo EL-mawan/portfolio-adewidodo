@@ -44,6 +44,7 @@ model Experience {
   endDate     DateTime?
   description String?
   image       String?
+  images      String[] @default([])
   current     Boolean  @default(false)
   order       Int      @default(0)
   createdAt   DateTime @default(now())
@@ -59,6 +60,7 @@ model Certification {
   credentialId String?
   credentialUrl String?
   image       String?
+  images      String[] @default([])
   description String?
   order       Int      @default(0)
   createdAt   DateTime @default(now())

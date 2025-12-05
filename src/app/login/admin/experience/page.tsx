@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useToast } from '@/hooks/use-toast'
+import { MultipleImageUpload } from '@/components/ui/multiple-image-upload'
 import {
   Dialog,
   DialogContent,
@@ -38,6 +39,8 @@ interface Experience {
   startDate: string
   endDate?: string
   description?: string
+  image?: string
+  images?: string[]
   current: boolean
   order: number
 }
@@ -308,6 +311,15 @@ export default function AdminExperience() {
                   value={currentExperience.description || ''}
                   onChange={(e) => setCurrentExperience({ ...currentExperience, description: e.target.value })}
                   className="h-32"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <MultipleImageUpload
+                  images={currentExperience.images || []}
+                  onImagesChange={(images) => setCurrentExperience({ ...currentExperience, images })}
+                  maxImages={10}
+                  label="Experience Images"
                 />
               </div>
 

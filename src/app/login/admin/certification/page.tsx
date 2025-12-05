@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/hooks/use-toast'
+import { MultipleImageUpload } from '@/components/ui/multiple-image-upload'
 import {
   Dialog,
   DialogContent,
@@ -38,6 +39,7 @@ interface Certification {
   credentialId?: string
   credentialUrl?: string
   image?: string
+  images?: string[]
   description?: string
   order: number
 }
@@ -327,6 +329,15 @@ export default function AdminCertification() {
                   value={currentCert.description || ''}
                   onChange={(e) => setCurrentCert({ ...currentCert, description: e.target.value })}
                   className="h-32"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <MultipleImageUpload
+                  images={currentCert.images || []}
+                  onImagesChange={(images) => setCurrentCert({ ...currentCert, images })}
+                  maxImages={10}
+                  label="Certification Images"
                 />
               </div>
 
