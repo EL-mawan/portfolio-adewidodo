@@ -105,7 +105,7 @@ export function ExperienceSection() {
                 <div className={`ml-16 md:ml-0 md:w-1/2 ${index % 2 === 0 ? 'md:pr-8' : 'md:pl-8'}`}>
                   <TiltCard>
                     <div onClick={() => setSelectedExperience(experience)} className="cursor-pointer">
-                      <Card className="border-0 shadow-xl bg-linear-to-br from-background via-background to-muted/10 hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group">
+                      <Card className="border-0 shadow-xl bg-linear-to-br from-background via-background to-muted/10 hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group p-0 gap-0">
                         {/* Image Section */}
                         <div className="relative h-72 md:h-80 w-full overflow-hidden rounded-t-xl">
                           {experience.images && experience.images.length > 0 ? (
