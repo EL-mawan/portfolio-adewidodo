@@ -54,3 +54,6 @@ server.log
 prisma/*.db
 prisma/*.db-journal
 .env*.local
+
+# uploaded files
+public/uploads/
