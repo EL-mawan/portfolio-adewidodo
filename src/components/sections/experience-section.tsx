@@ -105,7 +105,7 @@ export function ExperienceSection() {
                     <div onClick={() => setSelectedExperience(experience)} className="cursor-pointer">
                       <Card className="border-0 shadow-xl bg-linear-to-br from-background via-background to-muted/10 hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group">
                         {/* Image Section */}
-                        <div className="relative h-48 w-full overflow-hidden">
+                        <div className="relative h-56 w-full overflow-hidden">
                           {experience.image ? (
                             <>
                               <div className="absolute inset-0 bg-linear-to-t from-background/80 to-transparent z-10" />
@@ -202,7 +202,7 @@ export function ExperienceSection() {
             {selectedExperience && (
               <div className="flex flex-col max-h-[90vh] overflow-y-auto">
                 {/* Header Image */}
-                <div className="relative h-64 w-full shrink-0">
+                <div className="relative h-80 w-full shrink-0">
                   {selectedExperience.image ? (
                     <>
                       <div className="absolute inset-0 bg-linear-to-t from-background via-background/50 to-transparent z-10" />
