@@ -147,15 +147,27 @@ export default function AdminDashboard() {
       return ''
     }
 
-    // Handle Back Button
+    // Handle Back Button Aggressively
     const handlePopState = (event: PopStateEvent) => {
-      // Prevent navigation by pushing state back
+      // Prevent navigation by immediately pushing state back
+      // We push TWICE to ensure the back button trap is robust
       window.history.pushState(null, '', window.location.pathname)
+      
       // Show logout confirmation dialog
       setShowLogoutDialog(true)
+      
+      // Show warning toast
+      toast({
+        title: "⚠️ Peringatan Keamanan",
+        description: "Mohon gunakan tombol Logout untuk keluar dari Admin Panel demi keamanan data Anda.",
+        variant: "destructive",
+        duration: 3000
+      })
     }
 
-    // Initialize history state for back button interception
+    // Initialize history state trap
+    // Push state twice to create a buffer
+    window.history.pushState(null, '', window.location.pathname)
     window.history.pushState(null, '', window.location.pathname)
 
     window.addEventListener('beforeunload', handleBeforeUnload)
@@ -165,7 +177,7 @@ export default function AdminDashboard() {
       window.removeEventListener('beforeunload', handleBeforeUnload)
       window.removeEventListener('popstate', handlePopState)
     }
-  }, [])
+  }, [toast])
 
   const fetchStats = async () => {
     try {
