@@ -58,7 +58,8 @@ export function MultipleImageUpload({
         })
 
         if (!response.ok) {
-          throw new Error(`Failed to upload ${file.name}`)
+          const errorData = await response.json().catch(() => ({}))
+          throw new Error(errorData.details || errorData.error || `Failed to upload ${file.name}`)
         }
 
         const data = await response.json()
@@ -75,7 +76,7 @@ export function MultipleImageUpload({
       setTimeout(() => setUploadProgress({}), 1000)
     } catch (error) {
       console.error('Upload error:', error)
-      alert('Failed to upload images. Please try again.')
+      alert(error instanceof Error ? error.message : 'Failed to upload images. Please try again.')
     } finally {
       setUploading(false)
       if (e.target) {
