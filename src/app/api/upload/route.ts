@@ -32,7 +32,8 @@ export async function POST(request: NextRequest) {
         console.log('Uploading to Vercel Blob...')
         const blob = await put(file.name, file, {
           access: 'public',
-          token: process.env.BLOB_READ_WRITE_TOKEN // Explicitly pass token
+          token: process.env.BLOB_READ_WRITE_TOKEN, // Explicitly pass token
+          addRandomSuffix: true // Prevent duplicate filename errors
         })
         console.log('Blob upload success:', blob.url)
         return NextResponse.json({ url: blob.url, filename: file.name })
