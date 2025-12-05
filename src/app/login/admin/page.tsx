@@ -103,6 +103,20 @@ export default function AdminDashboard() {
   }, [])
 
   const checkAuth = async () => {
+    // Check session storage flag first to prevent direct URL access without login in this tab
+    const isSessionActive = sessionStorage.getItem('isAdminLoggedIn') === 'true'
+    
+    if (!isSessionActive) {
+      // If no session flag, force logout (clear cookies if any) and redirect
+      try {
+        await fetch('/api/auth/logout', { method: 'POST' })
+      } catch (e) {
+        console.error('Logout error:', e)
+      }
+      window.location.href = '/login'
+      return
+    }
+
     try {
       const res = await fetch('/api/auth/me')
       if (!res.ok) {
@@ -226,6 +240,10 @@ export default function AdminDashboard() {
 
     try {
       await fetch('/api/auth/logout', { method: 'POST' })
+      
+      // Clear session storage flag
+      sessionStorage.removeItem('isAdminLoggedIn')
+      
       toast({
         title: '✅ Logout Berhasil',
         description: 'Anda telah berhasil keluar. Sampai jumpa!',

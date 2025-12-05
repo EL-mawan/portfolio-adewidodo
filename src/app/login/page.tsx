@@ -50,6 +50,9 @@ export default function LoginPage() {
           duration: 3000,
         })
         
+        // Set session storage flag to indicate active session in this tab
+        sessionStorage.setItem('isAdminLoggedIn', 'true')
+        
         // Hard redirect to admin page immediately
         setTimeout(() => {
           window.location.href = '/login/admin'
@@ -75,7 +78,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-background via-background to-muted/20 px-4">
 
 
       <motion.div
@@ -84,14 +87,14 @@ export default function LoginPage() {
         transition={{ duration: 0.8 }}
         className="w-full max-w-md"
       >
-        <Card className="border-0 shadow-2xl bg-gradient-to-br from-background via-background to-muted/10">
+        <Card className="border-0 shadow-2xl bg-linear-to-br from-background via-background to-muted/10">
           <CardHeader className="text-center pb-6">
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
             >
-              <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              <CardTitle className="text-2xl font-bold bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                 Admin Login
               </CardTitle>
               <p className="text-muted-foreground mt-2">
