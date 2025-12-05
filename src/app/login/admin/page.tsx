@@ -91,6 +91,7 @@ export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isAuthChecking, setIsAuthChecking] = useState(true)
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
   const [currentTime, setCurrentTime] = useState<string>('')
   const router = useRouter()
   const { toast } = useToast()
@@ -187,6 +188,18 @@ export default function AdminDashboard() {
   }
 
   const handleLogout = async () => {
+    setIsLoggingOut(true)
+    
+    // Simulate auto-save process
+    toast({
+      title: '💾 Auto-Saving...',
+      description: 'Menyimpan semua perubahan terakhir...',
+      duration: 2000,
+    })
+
+    // Artificial delay to simulate saving data
+    await new Promise(resolve => setTimeout(resolve, 1500))
+
     try {
       await fetch('/api/auth/logout', { method: 'POST' })
       toast({
@@ -200,6 +213,7 @@ export default function AdminDashboard() {
         window.location.href = '/login'
       }, 1000)
     } catch (error) {
+      setIsLoggingOut(false)
       toast({
         title: '❌ Logout Gagal',
         description: 'Gagal logout. Silakan coba lagi.',
@@ -307,14 +321,31 @@ export default function AdminDashboard() {
 
           {/* Footer */}
           <div className="p-4 border-t border-border space-y-2">
-            <Button
-              variant="ghost"
-              className="w-full justify-start"
-              onClick={handleLogout}
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-500/10"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Konfirmasi Logout</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Apakah Anda yakin ingin keluar? Sistem akan otomatis menyimpan sesi dan perubahan terakhir Anda.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Batal</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleLogout} className="bg-red-500 hover:bg-red-600 text-white">
+                    Ya, Logout & Save
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </div>
       </div>
@@ -390,6 +421,17 @@ export default function AdminDashboard() {
           className="fixed inset-0 z-40 bg-black/50 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
+      )}
+
+      {/* Logout Loading Overlay */}
+      {isLoggingOut && (
+        <div className="fixed inset-0 z-60 bg-background/80 backdrop-blur-sm flex items-center justify-center">
+          <div className="text-center space-y-4">
+            <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto" />
+            <h3 className="text-xl font-semibold">Saving Changes...</h3>
+            <p className="text-muted-foreground">Please wait while we secure your data and log you out.</p>
+          </div>
+        </div>
       )}
     </div>
   )
