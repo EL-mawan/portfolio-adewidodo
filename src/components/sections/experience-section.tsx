@@ -232,20 +232,28 @@ export function ExperienceSection() {
                       showIndicators={true}
                     />
                   ) : selectedExperience.image ? (
+                    <img 
+                      src={selectedExperience.image}
+                      alt={selectedExperience.company}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="h-full bg-linear-to-br from-primary/20 to-primary/5 flex flex-col items-center justify-center">
+                      <Briefcase className="w-16 h-16 text-primary/40 mb-4" />
+                    </div>
+                  )}
+
+                  {/* Overlay Text - Always Visible if image/images exist */}
+                  {(selectedExperience.image || (selectedExperience.images && selectedExperience.images.length > 0)) && (
                     <>
-                      <div className="absolute inset-0 bg-linear-to-t from-background via-background/50 to-transparent z-10" />
-                      <img 
-                        src={selectedExperience.image}
-                        alt={selectedExperience.company}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute bottom-6 left-6 z-20">
+                      <div className="absolute inset-0 bg-linear-to-t from-background via-background/50 to-transparent z-10 pointer-events-none" />
+                      <div className="absolute bottom-6 left-6 z-20 pointer-events-none">
                         <div className="flex items-center gap-3 mb-2">
                           <div className="p-3 bg-primary/20 backdrop-blur-md rounded-xl border border-white/10">
                             <Briefcase className="w-8 h-8 text-primary-foreground" />
                           </div>
                           <div>
-                            <h2 className="text-3xl font-bold text-foreground tracking-tight">{selectedExperience.company}</h2>
+                            <h2 className="text-3xl font-bold text-foreground tracking-tight drop-shadow-md">{selectedExperience.company}</h2>
                             <div className="flex items-center gap-2 text-muted-foreground">
                               <MapPin className="w-4 h-4" />
                               <span>{selectedExperience.location || 'Remote'}</span>
@@ -254,9 +262,11 @@ export function ExperienceSection() {
                         </div>
                       </div>
                     </>
-                  ) : (
-                    <div className="h-full bg-linear-to-br from-primary/20 to-primary/5 flex flex-col items-center justify-center">
-                      <Briefcase className="w-16 h-16 text-primary/40 mb-4" />
+                  )}
+
+                  {/* Fallback text for no image */}
+                  {(!selectedExperience.image && (!selectedExperience.images || selectedExperience.images.length === 0)) && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center z-20 pointer-events-none">
                       <h2 className="text-2xl font-bold text-primary/80">{selectedExperience.company}</h2>
                       <div className="flex items-center gap-2 text-muted-foreground mt-2">
                         <MapPin className="w-4 h-4" />
