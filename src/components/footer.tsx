@@ -8,11 +8,14 @@ import { ThemeToggle } from './theme-toggle'
 
 
 const footerLinks = [
-  { name: 'Home', href: '/' },
-  { name: 'About', href: '/about' },
-  { name: 'Experience', href: '/experience' },
-  { name: 'Skills', href: '/skills' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'Home', href: '#home' },
+  { name: 'About', href: '#about' },
+  { name: 'Experience', href: '#experience' },
+  { name: 'Certification', href: '#certification' },
+  { name: 'Education', href: '#education' },
+  { name: 'Skills', href: '#skills' },
+  { name: 'Gallery', href: '#gallery' },
+  { name: 'Contact', href: '#contact' },
 ]
 
 export function Footer() {
@@ -38,6 +41,25 @@ export function Footer() {
     { name: 'LinkedIn', href: settings.linkedinUrl || '#', icon: Linkedin },
     { name: 'Email', href: `mailto:${settings.email || 'adewidodo@hse.com'}`, icon: Mail },
   ]
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault()
+    const targetId = href.replace('#', '')
+    const element = document.getElementById(targetId)
+    
+    if (element) {
+      const headerOffset = 80
+      const elementPosition = element.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      })
+    } else {
+      window.location.hash = href
+    }
+  }
 
   return (
     <footer className="bg-background border-t border-border/50">
@@ -83,6 +105,7 @@ export function Footer() {
                   <li key={link.name}>
                     <Link
                       href={link.href}
+                      onClick={(e) => handleNavClick(e, link.href)}
                       className="text-muted-foreground hover:text-primary transition-colors duration-200"
                     >
                       {link.name}
