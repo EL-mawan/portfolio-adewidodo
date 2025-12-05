@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { Upload, X, Loader2} from 'lucide-react'
+import { useState, useRef } from 'react'
+import { Upload, X, Loader2, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { put } from '@vercel/blob'
 
@@ -20,6 +20,11 @@ export function MultipleImageUpload({
 }: MultipleImageUploadProps) {
   const [uploading, setUploading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({})
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleTriggerUpload = () => {
+    fileInputRef.current?.click()
+  }
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
@@ -95,7 +100,7 @@ export function MultipleImageUpload({
           variant="outline"
           size="sm"
           disabled={uploading || images.length >= maxImages}
-          onClick={() => document.getElementById('multi-image-upload')?.click()}
+          onClick={handleTriggerUpload}
         >
           {uploading ? (
             <>
@@ -110,7 +115,7 @@ export function MultipleImageUpload({
           )}
         </Button>
         <input
-          id="multi-image-upload"
+          ref={fileInputRef}
           type="file"
           accept="image/*"
           multiple
@@ -162,14 +167,30 @@ export function MultipleImageUpload({
               </div>
             </div>
           ))}
+          
+          {/* Add More Button in Grid */}
+          {images.length < maxImages && (
+            <button
+              type="button"
+              onClick={handleTriggerUpload}
+              disabled={uploading}
+              className="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-border rounded-lg hover:border-primary/50 hover:bg-muted/50 transition-colors"
+            >
+              <Plus className="w-8 h-8 text-muted-foreground mb-2" />
+              <span className="text-xs text-muted-foreground">Add More</span>
+            </button>
+          )}
         </div>
       )}
 
       {images.length === 0 && (
-        <div className="border-2 border-dashed border-border rounded-lg p-8 text-center text-muted-foreground">
+        <div 
+          onClick={handleTriggerUpload}
+          className="border-2 border-dashed border-border rounded-lg p-8 text-center text-muted-foreground cursor-pointer hover:border-primary/50 hover:bg-muted/50 transition-colors"
+        >
           <Upload className="w-12 h-12 mx-auto mb-2 opacity-50" />
           <p className="text-sm">No images uploaded yet</p>
-          <p className="text-xs mt-1">Click "Upload Images" to add up to {maxImages} images</p>
+          <p className="text-xs mt-1">Click to upload up to {maxImages} images</p>
         </div>
       )}
     </div>
