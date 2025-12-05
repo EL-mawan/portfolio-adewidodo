@@ -128,7 +128,7 @@ export function CertificationSection() {
 
 
                 {/* Content Overlay with Blur */}
-                <div className="absolute inset-0 flex flex-col justify-end p-2 md:p-4">
+                <div className="absolute inset-0 flex flex-col justify-end p-2 md:p-4 z-20">
                   <div className="backdrop-blur-md bg-black/30 rounded-xl p-3 md:p-5 border border-white/10 text-white space-y-1 md:space-y-3 transform transition-all duration-300 hover:bg-black/40">
                     <div className="flex justify-between items-start gap-2">
                       <div className="min-w-0">
