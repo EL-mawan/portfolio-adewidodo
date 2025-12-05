@@ -31,6 +31,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
 import { ImageUpload } from '@/components/ui/image-upload'
+import { MultipleImageUpload } from '@/components/ui/multiple-image-upload'
 import { useToast } from '@/hooks/use-toast'
 import {
   Dialog,
@@ -576,14 +577,14 @@ function ExperienceContent({ onRefresh }: any) {
                     alt={exp.company} 
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-3 left-3 right-3">
                     <h3 className="text-lg font-bold text-white truncate">{exp.title}</h3>
                     <p className="text-sm text-white/80">{exp.company}</p>
                   </div>
                 </div>
               ) : (
-                <div className="h-32 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+                <div className="h-32 bg-linear-to-br from-primary/20 to-primary/5 flex items-center justify-center">
                   <Briefcase className="w-12 h-12 text-primary/40" />
                 </div>
               )}
@@ -754,11 +755,14 @@ function ExperienceContent({ onRefresh }: any) {
               />
             </div>
 
-            <ImageUpload
-              label="Company Logo / Image (Optional)"
-              value={currentItem.image || ''}
-              onChange={(url) => setCurrentItem({ ...currentItem, image: url })}
-            />
+            <div className="space-y-2">
+              <MultipleImageUpload
+                label="Company Logo / Images"
+                images={currentItem.images || (currentItem.image ? [currentItem.image] : [])}
+                onImagesChange={(images) => setCurrentItem({ ...currentItem, images, image: images[0] || '' })}
+                maxImages={10}
+              />
+            </div>
 
             <div className="flex justify-end gap-2 pt-4">
               <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
@@ -903,7 +907,7 @@ function CertificationContent({ onRefresh }: any) {
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300" />
                 </div>
               ) : (
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/80 to-primary/40 flex items-center justify-center">
+                <div className="absolute inset-0 bg-linear-to-br from-primary/80 to-primary/40 flex items-center justify-center">
                   <Award className="w-20 h-20 text-white/30" />
                 </div>
               )}
@@ -1067,11 +1071,14 @@ function CertificationContent({ onRefresh }: any) {
             </div>
 
 
-            <ImageUpload
-              label="Certificate Image (Optional)"
-              value={currentItem.image || ''}
-              onChange={(url) => setCurrentItem({ ...currentItem, image: url })}
-            />
+            <div className="space-y-2">
+              <MultipleImageUpload
+                label="Certificate Images"
+                images={currentItem.images || (currentItem.image ? [currentItem.image] : [])}
+                onImagesChange={(images) => setCurrentItem({ ...currentItem, images, image: images[0] || '' })}
+                maxImages={10}
+              />
+            </div>
 
             <div className="space-y-2">
               <Label htmlFor="description">Description (Optional)</Label>

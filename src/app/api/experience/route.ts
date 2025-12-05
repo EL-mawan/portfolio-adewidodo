@@ -22,6 +22,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
+    console.log('POST Experience Body:', body) // Debug log
     const { title, company, location, startDate, endDate, description, current, order, image, images } = body
 
     const experience = await db.experience.create({
@@ -43,7 +44,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error creating experience:', error)
     return NextResponse.json(
-      { error: 'Failed to create experience' },
+      { error: 'Failed to create experience', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     )
   }
@@ -52,6 +53,7 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json()
+    console.log('PUT Experience Body:', body) // Debug log
     const { id, title, company, location, startDate, endDate, description, current, order, image, images } = body
 
     const experience = await db.experience.update({
@@ -74,7 +76,7 @@ export async function PUT(request: NextRequest) {
   } catch (error) {
     console.error('Error updating experience:', error)
     return NextResponse.json(
-      { error: 'Failed to update experience' },
+      { error: 'Failed to update experience', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     )
   }
