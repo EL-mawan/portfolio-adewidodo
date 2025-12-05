@@ -107,7 +107,7 @@ export function ExperienceSection() {
                     <div onClick={() => setSelectedExperience(experience)} className="cursor-pointer">
                       <Card className="border-0 shadow-xl bg-linear-to-br from-background via-background to-muted/10 hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group">
                         {/* Image Section */}
-                        <div className="relative h-56 w-full overflow-hidden">
+                        <div className="relative h-72 md:h-80 w-full overflow-hidden">
                           {experience.images && experience.images.length > 0 ? (
                             <div className="absolute inset-0 w-full h-full">
                               <ImageCarousel
