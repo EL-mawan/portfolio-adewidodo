@@ -92,6 +92,7 @@ export default function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(true)
   const [isAuthChecking, setIsAuthChecking] = useState(true)
   const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false)
   const [currentTime, setCurrentTime] = useState<string>('')
   const router = useRouter()
   const { toast } = useToast()
@@ -139,19 +140,30 @@ export default function AdminDashboard() {
 
   // Prevent accidental page leave - show confirmation
   useEffect(() => {
+    // Handle Refresh / Close Tab
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      // Show browser's default confirmation dialog
       e.preventDefault()
-      e.returnValue = '' // Required for Chrome
-      return '' // Required for some browsers
+      e.returnValue = ''
+      return ''
     }
 
-    // Add event listener when component mounts
-    window.addEventListener('beforeunload', handleBeforeUnload)
+    // Handle Back Button
+    const handlePopState = (event: PopStateEvent) => {
+      // Prevent navigation by pushing state back
+      window.history.pushState(null, '', window.location.pathname)
+      // Show logout confirmation dialog
+      setShowLogoutDialog(true)
+    }
 
-    // Cleanup event listener when component unmounts
+    // Initialize history state for back button interception
+    window.history.pushState(null, '', window.location.pathname)
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    window.addEventListener('popstate', handlePopState)
+
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload)
+      window.removeEventListener('popstate', handlePopState)
     }
   }, [])
 
@@ -321,31 +333,14 @@ export default function AdminDashboard() {
 
           {/* Footer */}
           <div className="p-4 border-t border-border space-y-2">
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-500/10"
-                >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Logout
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Konfirmasi Logout</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Apakah Anda yakin ingin keluar? Sistem akan otomatis menyimpan sesi dan perubahan terakhir Anda.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Batal</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleLogout} className="bg-red-500 hover:bg-red-600 text-white">
-                    Ya, Logout & Save
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+            <Button
+              variant="ghost"
+              className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-500/10"
+              onClick={() => setShowLogoutDialog(true)}
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Logout
+            </Button>
           </div>
         </div>
       </div>
@@ -433,6 +428,25 @@ export default function AdminDashboard() {
           </div>
         </div>
       )}
+
+      {/* Global Logout Confirmation Dialog */}
+      <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Konfirmasi Keluar</AlertDialogTitle>
+            <AlertDialogDescription>
+              Apakah Anda yakin ingin meninggalkan halaman admin? Pastikan semua perubahan telah disimpan.
+              Sistem akan mencoba menyimpan sesi Anda secara otomatis.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setShowLogoutDialog(false)}>Batal</AlertDialogCancel>
+            <AlertDialogAction onClick={handleLogout} className="bg-red-500 hover:bg-red-600 text-white">
+              Ya, Keluar & Save
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
