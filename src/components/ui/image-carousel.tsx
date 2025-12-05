@@ -47,7 +47,7 @@ export function ImageCarousel({
   // Handle single image or no images
   if (images.length === 0) {
     return (
-      <div className={`relative w-full h-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center ${className}`}>
+      <div className={`relative w-full h-full bg-linear-to-br from-primary/20 to-primary/5 flex items-center justify-center ${className}`}>
         <span className="text-primary/60 font-medium">No images</span>
       </div>
     )

@@ -7,6 +7,7 @@ import { TiltCard } from '@/components/ui/tilt-card'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Dialog, DialogContent, DialogClose, DialogTitle } from '@/components/ui/dialog'
+import { ImageCarousel } from '@/components/ui/image-carousel'
 
 interface Experience {
   id: string
@@ -17,6 +18,7 @@ interface Experience {
   endDate?: string
   description?: string
   image?: string
+  images?: string[]
   current: boolean
   order: number
 }
@@ -106,7 +108,15 @@ export function ExperienceSection() {
                       <Card className="border-0 shadow-xl bg-linear-to-br from-background via-background to-muted/10 hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group">
                         {/* Image Section */}
                         <div className="relative h-56 w-full overflow-hidden">
-                          {experience.image ? (
+                          {experience.images && experience.images.length > 0 ? (
+                            <ImageCarousel
+                              images={experience.images}
+                              alt={experience.company}
+                              autoSlideInterval={3000}
+                              showControls={true}
+                              showIndicators={true}
+                            />
+                          ) : experience.image ? (
                             <>
                               <div className="absolute inset-0 bg-linear-to-t from-background/80 to-transparent z-10" />
                               <img 
@@ -203,7 +213,15 @@ export function ExperienceSection() {
               <div className="flex flex-col max-h-[90vh] overflow-y-auto">
                 {/* Header Image */}
                 <div className="relative h-80 w-full shrink-0">
-                  {selectedExperience.image ? (
+                  {selectedExperience.images && selectedExperience.images.length > 0 ? (
+                    <ImageCarousel
+                      images={selectedExperience.images}
+                      alt={selectedExperience.company}
+                      autoSlideInterval={4000}
+                      showControls={true}
+                      showIndicators={true}
+                    />
+                  ) : selectedExperience.image ? (
                     <>
                       <div className="absolute inset-0 bg-linear-to-t from-background via-background/50 to-transparent z-10" />
                       <img 

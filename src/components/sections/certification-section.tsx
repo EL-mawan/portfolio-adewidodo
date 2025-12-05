@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useAutoRefresh } from '@/contexts/realtime-context'
+import { ImageCarousel } from '@/components/ui/image-carousel'
 
 interface Certification {
   id: string
@@ -19,6 +20,7 @@ interface Certification {
   credentialId?: string
   credentialUrl?: string
   image?: string
+  images?: string[]
   description?: string
   order: number
 }
@@ -95,7 +97,16 @@ export function CertificationSection() {
                 onClick={() => openModal(cert)}
               >
                 {/* Full Background Image */}
-                {cert.image ? (
+                {cert.images && cert.images.length > 0 ? (
+                  <ImageCarousel
+                    images={cert.images}
+                    alt={cert.title}
+                    autoSlideInterval={3000}
+                    showControls={false}
+                    showIndicators={true}
+                    className="absolute inset-0"
+                  />
+                ) : cert.image ? (
                   <div className="absolute inset-0">
                     <img 
                       src={cert.image} 
@@ -200,7 +211,19 @@ export function CertificationSection() {
             {selectedCert && (
               <div className="space-y-6">
                 {/* Certificate Image */}
-                {selectedCert.image && (
+                {selectedCert.images && selectedCert.images.length > 0 ? (
+                  <div className="relative rounded-lg overflow-hidden bg-muted/20">
+                    <div className="h-[400px]">
+                      <ImageCarousel
+                        images={selectedCert.images}
+                        alt={selectedCert.title}
+                        autoSlideInterval={4000}
+                        showControls={true}
+                        showIndicators={true}
+                      />
+                    </div>
+                  </div>
+                ) : selectedCert.image && (
                   <div className="relative rounded-lg overflow-hidden bg-muted/20 p-4">
                     <img
                       src={selectedCert.image}
