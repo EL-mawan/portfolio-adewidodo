@@ -24,12 +24,12 @@ async function resetAdmin() {
 
     // Create new admin user
     console.log('Creating new admin user...')
-    const hashedPassword = await bcrypt.hash('admin123', 10)
+    const hashedPassword = await bcrypt.hash('hse123456', 10)
     
     const newAdmin = await prisma.user.create({
       data: {
-        email: 'admin@example.com',
-        name: 'Admin',
+        email: 'adewidodo@hse.com',
+        name: 'Ade Widodo',
         password: hashedPassword,
         role: 'admin'
       }
@@ -38,8 +38,8 @@ async function resetAdmin() {
     console.log('✅ Admin user created successfully!\n')
     console.log('📋 LOGIN CREDENTIALS:')
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
-    console.log('Email:    admin@example.com')
-    console.log('Password: admin123')
+    console.log('Email:    adewidodo@hse.com')
+    console.log('Password: hse123456')
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n')
     console.log('🌐 Login at: http://localhost:3000/login')
     console.log('\n✨ Done!')

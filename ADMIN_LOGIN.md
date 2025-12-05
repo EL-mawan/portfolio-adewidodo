@@ -3,8 +3,8 @@
 ## ✅ KREDENSIAL LOGIN (SUDAH DIRESET)
 
 ```
-Email:    admin@example.com
-Password: admin123
+Email:    adewidodo@hse.com
+Password: hse123456
 ```
 
 **Login URL:** http://localhost:3000/login
@@ -28,8 +28,8 @@ npx tsx reset-admin.ts
 Script akan:
 1. ✅ Hapus semua user yang ada
 2. ✅ Buat admin user baru
-3. ✅ Password: `admin123`
-4. ✅ Email: `admin@example.com`
+3. ✅ Password: `hse123456`
+4. ✅ Email: `adewidodo@hse.com`
 
 ---
 
@@ -82,8 +82,8 @@ npm run dev
 4. Check terminal untuk error
 
 ### Error "Invalid credentials"?
-- Email: `admin@example.com` (pastikan huruf kecil semua)
-- Password: `admin123` (case sensitive)
+- Email: `adewidodo@hse.com` (pastikan huruf kecil semua)
+- Password: `hse123456` (case sensitive)
 - Jalankan `npm run admin:reset` untuk reset ulang
 
 ### Lupa email admin yang aktif?
@@ -96,8 +96,8 @@ npx tsx -e "import { PrismaClient } from '@prisma/client'; const p = new PrismaC
 
 ## 📝 CATATAN PENTING
 
-- ⚠️ Password default `admin123` hanya untuk development
-- 🔒 Di production, gunakan password yang kuat
+- ⚠️ Password `hse123456` untuk akses admin
+- 🔒 Simpan password dengan aman
 - 🔐 Jangan share kredensial admin
 - 💾 Backup data secara berkala
 
