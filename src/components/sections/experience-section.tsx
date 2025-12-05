@@ -105,9 +105,9 @@ export function ExperienceSection() {
                 <div className={`ml-16 md:ml-0 md:w-1/2 ${index % 2 === 0 ? 'md:pr-8' : 'md:pl-8'}`}>
                   <TiltCard>
                     <div onClick={() => setSelectedExperience(experience)} className="cursor-pointer">
-                      <Card className="border-0 shadow-xl h-[450px] relative overflow-hidden group cursor-pointer transition-all duration-300 hover:shadow-2xl">
-                        {/* Full Background Image Section */}
-                        <div className="absolute inset-0 w-full h-full">
+                      <Card className="border-0 shadow-xl bg-linear-to-br from-background via-background to-muted/10 hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col group">
+                        {/* Image Section */}
+                        <div className="relative h-72 md:h-80 w-full overflow-hidden">
                           {experience.images && experience.images.length > 0 ? (
                             <div className="absolute inset-0 w-full h-full">
                               <ImageCarousel
@@ -118,6 +118,7 @@ export function ExperienceSection() {
                                 showIndicators={true}
                                 className="w-full h-full"
                               />
+                              <div className="absolute inset-0 bg-linear-to-t from-background/80 to-transparent z-10 pointer-events-none" />
                             </div>
                           ) : experience.image ? (
                             <img 
@@ -126,70 +127,76 @@ export function ExperienceSection() {
                               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                             />
                           ) : (
-                            <div className="h-full w-full bg-linear-to-br from-primary/20 to-primary/5 flex flex-col items-center justify-center">
-                              <Briefcase className="w-16 h-16 text-primary/40 mb-3" />
+                            <div className="h-full bg-linear-to-br from-primary/20 to-primary/5 flex flex-col items-center justify-center">
+                              <Briefcase className="w-12 h-12 text-primary/40 mb-3" />
                             </div>
                           )}
-                          
-                          {/* Dark Gradient Overlay for Readability */}
-                          <div className="absolute inset-0 bg-linear-to-t from-black/95 via-black/70 to-transparent z-10" />
-                        </div>
 
-                        {/* Top Overlay: Company Name */}
-                        <div className="absolute top-6 left-6 z-20">
-                          <div className="flex items-center gap-3 text-white">
-                            <div className="p-2.5 bg-white/10 backdrop-blur-md rounded-xl border border-white/10 shadow-lg">
-                              <Briefcase className="w-5 h-5 text-white" />
-                            </div>
-                            <span className="font-bold text-xl tracking-wide drop-shadow-md text-white">{experience.company}</span>
-                          </div>
-                        </div>
-
-                        {/* Bottom Overlay: Content */}
-                        <div className="absolute bottom-0 left-0 right-0 p-6 z-20 text-white">
-                          <div className="transform transition-transform duration-300 translate-y-2 group-hover:translate-y-0">
-                            {/* Header */}
-                            <div className="flex items-start justify-between mb-2">
-                              <div>
-                                <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-primary-foreground transition-colors">
-                                  {experience.title}
-                                </h3>
-                                {experience.current && (
-                                  <Badge variant="secondary" className="bg-primary text-primary-foreground border-0 mt-1">
-                                    Current
-                                  </Badge>
-                                )}
-                              </div>
-                            </div>
-
-                            {/* Meta Info */}
-                            <div className="flex flex-wrap items-center gap-4 mb-3 text-sm text-gray-300">
-                              <div className="flex items-center gap-1.5">
-                                <Calendar className="w-4 h-4 text-primary-foreground/80" />
-                                <span>
-                                  {formatDate(experience.startDate)} - {experience.current ? 'Present' : formatDate(experience.endDate!)}
-                                </span>
-                              </div>
-                              {experience.location && (
-                                <div className="flex items-center gap-1.5">
-                                  <MapPin className="w-4 h-4 text-primary-foreground/80" />
-                                  <span>{experience.location}</span>
+                          {/* Overlay Text - Always Visible if image/images exist */}
+                          {(experience.image || (experience.images && experience.images.length > 0)) && (
+                            <>
+                              <div className="absolute inset-0 bg-linear-to-t from-background/90 via-transparent to-transparent z-10 pointer-events-none" />
+                              <div className="absolute bottom-4 left-4 z-20 pointer-events-none">
+                                <div className="flex items-center gap-2 text-white">
+                                  <div className="p-2 bg-primary/20 backdrop-blur-md rounded-lg border border-white/10">
+                                    <Briefcase className="w-5 h-5 text-primary-foreground" />
+                                  </div>
+                                  <span className="font-bold text-lg tracking-wide drop-shadow-[0_2px_2px_rgba(0,0,0,1)]">{experience.company}</span>
                                 </div>
+                              </div>
+                            </>
+                          )}
+                          
+                          {/* Fallback text for no image */}
+                          {(!experience.image && (!experience.images || experience.images.length === 0)) && (
+                            <div className="absolute bottom-4 left-0 right-0 text-center z-20">
+                              <span className="text-primary/60 font-medium">{experience.company}</span>
+                            </div>
+                          )}
+                        </div>
+
+                        <CardContent className="p-6">
+                          {/* Header */}
+                          <div className="flex items-start justify-between mb-4">
+                            <div>
+                              <h3 className="text-xl font-bold text-foreground mb-1 group-hover:text-primary transition-colors">
+                                {experience.title}
+                              </h3>
+                              {experience.current && (
+                                <Badge variant="default" className="bg-primary/10 text-primary border-primary/20 mt-1">
+                                  Current
+                                </Badge>
                               )}
                             </div>
-
-                            {/* Description Preview */}
-                            {experience.description && (
-                              <p className="text-gray-300 leading-relaxed line-clamp-2 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-0 group-hover:h-auto">
-                                {experience.description}
-                              </p>
-                            )}
-                            
-                            <div className="mt-4 text-primary-foreground text-sm font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
-                              Read more <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
-                            </div>
                           </div>
-                        </div>
+
+                          {/* Meta Info */}
+                          <div className="flex flex-wrap items-center gap-4 mb-4 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <Calendar className="w-4 h-4 text-primary" />
+                              <span>
+                                {formatDate(experience.startDate)} - {experience.current ? 'Present' : formatDate(experience.endDate!)}
+                              </span>
+                            </div>
+                            {experience.location && (
+                              <div className="flex items-center gap-1">
+                                <MapPin className="w-4 h-4 text-primary" />
+                                <span>{experience.location}</span>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Description Preview */}
+                          {experience.description && (
+                            <p className="text-muted-foreground leading-relaxed line-clamp-3">
+                              {experience.description}
+                            </p>
+                          )}
+                          
+                          <div className="mt-4 text-primary text-sm font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            Read more <span>&rarr;</span>
+                          </div>
+                        </CardContent>
                       </Card>
                     </div>
                   </TiltCard>
